@@ -2,17 +2,22 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import {Router, browserHistory} from 'react-router'
 import {Provider} from 'react-redux'
-import {createStore, applyMiddleware} from 'redux'
+import {createStore, applyMiddleware, compose} from 'redux'
 import thunk from 'redux-thunk'
 import routes from './routes'
+import rootReducer from './rootReducer'
 import './styles/base.scss'
 
 const store = createStore(
-  // rootreducer - takes state and action to return new state
-  (state = {}) => state,
+  // rootReducer - takes state and action to return new state
+  rootReducer,
   // initail state
-  // thunk lets us dispatch async actions
-  applyMiddleware(thunk)
+  // middleware
+  compose(
+    // thunk lets us dispatch async actions
+    applyMiddleware(thunk),
+    window.devToolsExtension ? window.devToolsExtension() : f => f
+  )
 );
 
 ReactDOM.render(

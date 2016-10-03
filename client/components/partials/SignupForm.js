@@ -35,6 +35,10 @@ export default class SignupForm extends Component{
       this.props.userSignupRequest(this.state)
         .then(res=>{
           console.log(res.data);
+          this.props.addFlashMessage({
+            type: 'success',
+            text: 'You have successfully signed in.'
+          });
           browserHistory.push('/');
         }).catch(err=>{
           console.log(err.response.data);
@@ -75,5 +79,6 @@ export default class SignupForm extends Component{
 }
 
 SignupForm.propTypes = {
-  userSignupRequest: React.PropTypes.func.isRequired
+  userSignupRequest: React.PropTypes.func.isRequired,
+  addFlashMessage: React.PropTypes.func.isRequired
 };
