@@ -18,7 +18,10 @@ export default {
     loaders: [
       {
         test: /\.js$/,
-        include: path.resolve('client'),
+        include: [
+          path.resolve('client'),
+          path.resolve('server/shared')
+        ],
         loaders: ['babel']
       },
       {
