@@ -5,7 +5,7 @@ export default class Navbar extends Component{
   render(){
     return (
       <nav className='rma-nav'>
-        <p className='rma-title'><Link to='/'>React Mongo Auth</Link></p>
+        <p className='rma-title'><Link to='/'>Home</Link></p>
         <ul className='rma-nav-menu'>
           <li className='rma-item'>
             <Link to='/login'>Login</Link>
