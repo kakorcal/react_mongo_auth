@@ -1,4 +1,6 @@
 import express from 'express'
+import users from './routes/users'
+import bodyParser from 'body-parser'
 import webpack from 'webpack'
 import webpackMiddleware from 'webpack-dev-middleware'
 import webpackHotMiddleware from 'webpack-hot-middleware'
@@ -7,6 +9,9 @@ import webpackConfig from '../webpack.config.dev'
 let app = express();
 let port = process.env.PORT || 3000;
 let compiler = webpack(webpackConfig);
+
+app.use(bodyParser.json());
+app.use('/api/users', users);
 
 app.use(webpackMiddleware(compiler, {
   hot: true,

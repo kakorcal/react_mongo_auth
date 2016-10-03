@@ -31,7 +31,7 @@
     "redux": "^3.6.0",
     "redux-thunk": "^2.1.0",
     "serve-favicon": "^2.3.0",
-    "underscore": "^1.8.3"
+    "validator": "^6.0.0"
   },
   "devDependencies": {
     "autoprefixer": "^6.5.0",
