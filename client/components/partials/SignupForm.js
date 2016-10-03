@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import validateInput from '../../../server/shared/validations/signup'
 import TextFieldGroup from './common/TextFieldGroup'
+import {browserHistory} from 'react-router'
 
 export default class SignupForm extends Component{
   constructor(props) {
@@ -34,6 +35,7 @@ export default class SignupForm extends Component{
       this.props.userSignupRequest(this.state)
         .then(res=>{
           console.log(res.data);
+          browserHistory.push('/');
         }).catch(err=>{
           console.log(err.response.data);
           this.setState({errors: err.response.data, isLoading: false});
