@@ -3,7 +3,7 @@ import validateInput from '../../../server/shared/validations/signup'
 import TextFieldGroup from './common/TextFieldGroup'
 import {browserHistory} from 'react-router'
 
-export default class SignupForm extends Component{
+class SignupForm extends Component{
   constructor(props) {
     super(props);
     this.state = {
@@ -82,3 +82,5 @@ SignupForm.propTypes = {
   userSignupRequest: React.PropTypes.func.isRequired,
   addFlashMessage: React.PropTypes.func.isRequired
 };
+
+export default SignupForm
