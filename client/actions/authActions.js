@@ -1,5 +1,6 @@
 import axios from 'axios'
 import {SET_CURRENT_USER} from './types'
+import setAuthorizationToken from '../utils/setAuthorizationToken'
 
 export function login(data){
   return dispatch => {
@@ -12,4 +13,12 @@ export function setCurrentUser(user){
     type: SET_CURRENT_USER,
     user
   }
+}
+
+export function logout() {
+  return dispatch => {
+    localStorage.removeItem('jwtToken');
+    setAuthorizationToken(false);
+    dispatch(setCurrentUser({}));
+  };
 }
