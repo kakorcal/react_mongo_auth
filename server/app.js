@@ -11,6 +11,7 @@ let app = express();
 let port = process.env.PORT || 3000;
 let compiler = webpack(webpackConfig);
 
+// auth - protect api end points and client side routes
 app.use(bodyParser.json());
 app.use('/api/users', users);
 app.use('/api/auth', auth);
