@@ -3,6 +3,7 @@ import TextFieldGroup from './common/TextFieldGroup'
 import validateInput from '../../../server/shared/validations/login'
 import {connect} from 'react-redux'
 import {login} from '../../actions/loginActions'
+import {addFlashMessage} from '../../actions/flashMessages'
 import {browserHistory} from 'react-router'
 
 /*
@@ -47,10 +48,10 @@ class LoginForm extends Component{
       this.props.login(this.state)
         .then(res => {
           console.log(res.data);
-          // this.props.addFlashMessage({
-          //   type: 'success',
-          //   text: 'You have successfully logged in.'
-          // });
+          this.props.addFlashMessage({
+            type: 'success',
+            text: 'You have successfully logged in.'
+          });
           browserHistory.push('/');
         })
         .catch(err => {
@@ -65,26 +66,28 @@ class LoginForm extends Component{
   }
 
   render(){
+    const {errors, identifier, password, isLoading} = this.state;
     return (
       <form onSubmit={this.onSubmit}>
+        {errors.form && <div className='alert alert-danger'>{errors.form}</div>}
         <TextFieldGroup 
           field='identifier'
           label='Username'
-          value={this.state.identifier}
-          error={this.state.errors.identifier}
+          value={identifier}
+          error={errors.identifier}
           onChange={this.onChange}/>
 
         <TextFieldGroup 
           field='password'
           type='password'
           label='Password'
-          value={this.state.password}
-          error={this.state.errors.password}
+          value={password}
+          error={errors.password}
           onChange={this.onChange}/>
 
         <div className="form-group">
           <input type="submit" 
-            disabled={this.state.isLoading} 
+            disabled={isLoading} 
             className='btn btn-primary btn-lg' 
             value='Submit'
           />
@@ -95,7 +98,8 @@ class LoginForm extends Component{
 }
 
 LoginForm.propTypes = {
-  login: React.PropTypes.func.isRequired
+  login: React.PropTypes.func.isRequired,
+  addFlashMessage: React.PropTypes.func.isRequired
 };
 
-export default connect(null, {login})(LoginForm);
+export default connect(null, {login, addFlashMessage})(LoginForm);
