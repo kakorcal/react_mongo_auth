@@ -46,6 +46,11 @@ export default {
     modulesDirectories: ['node_modules', 'client'],
     extensions: ['', '.js']
   },
+  node:  {
+    // for using jwt in browser
+    net: 'empty',
+    dns: 'empty'
+  },
   plugins: [
     new webpack.NoErrorsPlugin(),
     new webpack.optimize.OccurenceOrderPlugin(),

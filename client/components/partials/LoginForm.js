@@ -2,9 +2,11 @@ import React, {Component} from 'react'
 import TextFieldGroup from './common/TextFieldGroup'
 import validateInput from '../../../server/shared/validations/login'
 import {connect} from 'react-redux'
-import {login} from '../../actions/loginActions'
+import {login, setCurrentUser} from '../../actions/authActions'
 import {addFlashMessage} from '../../actions/flashMessages'
 import {browserHistory} from 'react-router'
+import setAuthorizationToken from '../../utils/setAuthorizationToken'
+import jwt from 'jsonwebtoken'
 
 /*
   form state:
@@ -48,6 +50,12 @@ class LoginForm extends Component{
       this.props.login(this.state)
         .then(res => {
           console.log(res.data);
+          const token = res.data.token;
+          localStorage.setItem('jwtToken', token);
+          setAuthorizationToken(token);
+          
+          this.props.setCurrentUser(jwt.decode(token));
+
           this.props.addFlashMessage({
             type: 'success',
             text: 'You have successfully logged in.'
@@ -99,7 +107,8 @@ class LoginForm extends Component{
 
 LoginForm.propTypes = {
   login: React.PropTypes.func.isRequired,
+  setCurrentUser: React.PropTypes.func.isRequired,
   addFlashMessage: React.PropTypes.func.isRequired
 };
 
-export default connect(null, {login, addFlashMessage})(LoginForm);
+export default connect(null, {login, setCurrentUser, addFlashMessage})(LoginForm);
