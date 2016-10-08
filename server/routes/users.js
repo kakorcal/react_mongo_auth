@@ -10,8 +10,19 @@ router.post('/', (req, res)=>{
 
   if(isValid){
     const {username, password} = req.body;
+    var plainTextPassword = password;
+    
+    bcrypt.genSalt(10, (err, salt) => {
+      if(err) res.status(500).json({error: err});
 
-    res.send('Create New User');
+      bcrypt.hash(plainTextPassword, salt, (err, password) => {
+        User.forge({
+          username, password
+        }, {hasTimestamps: true}).save()
+        .then(user => res.json({success: true}))
+        .catch(err => res.status(500).json({error: err})); 
+      });
+    });
   }else{
     res.status(400).json(errors);
   }
