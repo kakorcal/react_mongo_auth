@@ -1,31 +1,55 @@
 import express from 'express'
-import validateInput from '../shared/validations/signup'
+import commonValidations from '../shared/validations/signup'
 import User from '../db/models/user'
 import bcrypt from 'bcrypt'
+import {isEmpty} from 'lodash'
 
 let router = express.Router();
 
+function validateInput(data, otherValidations){
+  let {errors} = otherValidations(data);
+  
+  // not necessary but if you want to check uniqueness for both username and email,
+  // use orWhere in the query. the purpose is to do only one query to the db.
+  return User.query({
+    where: {username: data.username}
+  }).fetch().then(user => {
+    if(user){
+      // bookshelf get method
+      if(user.get('username') === data.username){
+        errors.username = 'Username already exists';
+      } 
+    }
+
+    return {
+      errors,
+      isValid: isEmpty(errors)
+    };
+  });
+}
+
 router.post('/', (req, res)=>{
-  const {errors, isValid} = validateInput(req.body);
+  validateInput(req.body, commonValidations)
+    .then(({errors, isValid}) => {
+      if(isValid){
+        const {username, password} = req.body;
+        var plainTextPassword = password;
+        
+        bcrypt.genSalt(10, (err, salt) => {
+          if(err) res.status(500).json({error: err});
 
-  if(isValid){
-    const {username, password} = req.body;
-    var plainTextPassword = password;
-    
-    bcrypt.genSalt(10, (err, salt) => {
-      if(err) res.status(500).json({error: err});
-
-      bcrypt.hash(plainTextPassword, salt, (err, password) => {
-        User.forge({
-          username, password
-        }, {hasTimestamps: true}).save()
-        .then(user => res.json({success: true}))
-        .catch(err => res.status(500).json({error: err})); 
-      });
+          bcrypt.hash(plainTextPassword, salt, (err, password) => {
+            User.forge({
+              username, password
+            }, {hasTimestamps: true}).save()
+            .then(user => res.json({success: true}))
+            .catch(err => res.status(500).json({error: err})); 
+          });
+        });
+      }else{
+        res.status(400).json(errors);
+      }
     });
-  }else{
-    res.status(400).json(errors);
-  }
 });
 
 export default router
