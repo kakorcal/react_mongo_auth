@@ -30,8 +30,9 @@ function validateInput(data, otherValidations){
 
 router.get('/:identifier', (req, res) => {
   User.query({
-    select: ['username'], // don't select the password!
-    where: {username: req.params.identifier}
+    select: ['id','username'], // don't select the password!
+    where: {id: req.params.identifier},
+    orWhere: {username: req.params.identifier}
   }).fetch().then(user => {
     res.json({user});
   });

@@ -3,6 +3,7 @@ import User from '../db/models/user'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import config from '../config'
+import authenticate from '../middleware/authenticate'
 
 let router = express.Router();
 
@@ -31,6 +32,10 @@ router.post('/', (req, res) => {
       res.status(401).json({form: 'Invalid Credentials.'});
     }
   })
+});
+
+router.get('/user', authenticate, (req, res) => {
+  eval(require('locus'));
 });
 
 export default router

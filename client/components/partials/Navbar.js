@@ -15,6 +15,14 @@ class Navbar extends Component{
     const userLinks = (
       <ul className='rma-nav-menu'>
         <li className='rma-item'>
+          <Link to='/user'>Profile</Link>
+          <ul className='rma-nav-submenu'>
+            <li className='rma-subitem'><span>One</span></li>
+            <li className='rma-subitem'><span>Two</span></li>
+            <li className='rma-subitem'><span>Three</span></li>
+          </ul>
+        </li>
+        <li className='rma-item'>
           <a href='#' onClick={this.logout.bind(this)}>Logout</a>
           <ul className='rma-nav-submenu'>
             <li className='rma-subitem'><span>One</span></li>

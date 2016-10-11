@@ -9,6 +9,7 @@ export default (req, res, next) => {
   if(authorizationHeader){
     token = authorizationHeader.split(' ')[1];
   }
+  
   if(token){
     jwt.verify(token, config.jwtSecret, (err, decoded) => {
       if(err){
